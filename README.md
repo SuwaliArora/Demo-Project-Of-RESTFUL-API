@@ -55,6 +55,38 @@ The API which is developed using REST is known as REST API/RESTful API.
 | Update | PUT,PATCH | Updating Data(Complete Update - PUT, Partial Update - PATCH) |
 | Delete     | DELETE | Deleting Data |
 
+## Django REST Framework
+Django REST framework is a powerful and flexible toolkit for building Web APIs.
+
+- The Web browsable API is a huge usability win for your developers.
+- Authentication policies including packages for OAuth1 and OAuth2.
+- Serialization that supports both ORM and non-ORM data sources.
+- Customizable all the way down - just use regular function-based views if you don't need the more powerful features.
+- Extensive documentation, and great community support.
+- Used and trusted by internationally recognized companies including Mozilla, Red Hat, Heroku, and Eventbrite.
+
+## Requirements
+- Python
+- Django
+
+The following packages are optional:
+
+- PyYAML, uritemplate (5.1+, 3.0.0+) - Schema generation support.
+-  Markdown (3.0.0+) - Markdown support for the browsable API.
+- Pygments (2.4.0+) - Add syntax highlighting to Markdown processing.
+- django-filter (1.0.1+) - Filtering support.
+- django-guardian (1.1.1+) - Object level permissions support.
+
+## How to Install DRF
+
+If python and django are installed globally on your system, then
+
+Install using pip
+
+```bash 
+  pip install djangorestframework
+
+```
 
   
 ## Serialization
@@ -83,30 +115,6 @@ Render the Data into Json
  json_data = JSONRenderer().render(serializer.data)
 ```
 
-
-    
-
-  
-## Requirements
-- Python
-- Django
-The following packages are optional:
-
-- PyYAML, uritemplate (5.1+, 3.0.0+) - Schema generation support.
--  Markdown (3.0.0+) - Markdown support for the browsable API.
-- Pygments (2.4.0+) - Add syntax highlighting to Markdown processing.
-- django-filter (1.0.1+) - Filtering support.
-- django-guardian (1.1.1+) - Object level permissions support.
-
-## Django REST Framework
-Django REST framework is a powerful and flexible toolkit for building Web APIs.
-
-- The Web browsable API is a huge usability win for your developers.
-- Authentication policies including packages for OAuth1 and OAuth2.
-- Serialization that supports both ORM and non-ORM data sources.
-- Customizable all the way down - just use regular function-based views if you don't need the more powerful features.
-- Extensive documentation, and great community support.
-- Used and trusted by internationally recognized companies including Mozilla, Red Hat, Heroku, and Eventbrite.
   
 ## ModelSerializer Class
 The ModelSerializer class provides a shortcut that lets you automatically create a Serializer class with fields that correspond to the Model fields.
@@ -125,3 +133,16 @@ An HttpResponse subclass that helps to create a JSON-encoded response. It inheri
 - The encoder, which defaults to django.core.serializers.json.DjangoJSONEncoder, will be used to serialize the data.
 - The safe boolean parameter defaults to True. If it's set to False, any object can be passed for serialization (otherwise only dict instances are allowed). If safe is True and a non-dict object is passed as the first argument, a TypeError will be raised.
 - The json_dumps_params parameter is a dictionary of keyword arguments to pass to the json.dumps() call used to generate the response.
+
+
+## Serializer Field
+
+Serializer fields handle converting between primitive values and internal datatypes. They also deal with validating input values, as well as retrieving and setting the values from their parent objects.
+
+Syntax:
+
+```bash 
+  from rest_framework import serializers 
+  serializers.Field_Name()
+
+```
