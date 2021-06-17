@@ -16,12 +16,11 @@ def student_create(request):
         stream = io.BytesIO(json_data)
         pythondata = JSONParser().parse(stream)
         #to convert python data into complex data
-        serializer = StudentSerializer(pythondata)
+        serializer = StudentSerializer(data = pythondata)
         if serializer.is_valid():
             serializer.save()
             res = {'msg': 'Data created'}
-            json_data = JSONRenderer().render(msg)
+            json_data = JSONRenderer().render(res)
             return HttpResponse(json_data, content_type='application/json')
-
         json_data = JSONRenderer().render(serializer.errors)
         return HttpResponse(json_data, content_type='application/json')
