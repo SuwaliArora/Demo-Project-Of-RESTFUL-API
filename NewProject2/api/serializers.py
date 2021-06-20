@@ -1,4 +1,4 @@
-from NewProject2.api.models import Student
+from .models import Student
 from rest_framework import serializers
 from .models import Student
 
