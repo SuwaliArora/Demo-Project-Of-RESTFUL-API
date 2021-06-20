@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from NewProject2.api import views
+from django.urls.conf import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('studentcreate/', views.student_create),
+    path('', include('api.urls')),
 ]
 
