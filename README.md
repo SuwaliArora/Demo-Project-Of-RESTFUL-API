@@ -146,3 +146,30 @@ Syntax:
   serializers.Field_Name()
 
 ```
+## Core Arguments
+
+**label:** A short text string that may be used as the name of the field in HTML form fields or other descriptive elements.
+
+**validators:** A list of validator functions which should be applied to the incoming field input, and which either raise a validation error or simply return. Validator functions should typically raise serializers. **ValidationError**, but Django's built-in ValidationError is also supported for compatibility with validators defined in the Django codebase or third party Django packages.
+
+## De-serialization
+
+Serializers are also responsible for deserialization which means it allows parsed data to be converted back into complex types, after first validating the incoming data.
+
+## BytesIO()
+
+A stream implementation using an in-memory bytes buffer. It inherits BufferedlOBase. The buffer is discarded when the close() method is called.
+
+```bash 
+  import io
+  streamio.BytesIO(json_data)
+```
+
+## JSONParser()
+
+This is used to parse json data to python native data type.  
+
+```bash 
+  from rest_framework.parsers
+  parsed_data = JSONParser().parse(stream)
+```
