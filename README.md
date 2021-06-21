@@ -173,3 +173,30 @@ This is used to parse json data to python native data type.
   from rest_framework.parsers
   parsed_data = JSONParser().parse(stream)
 ```
+
+## De-serialization
+
+Deserialization allows parsed data to be converted back into complex types, after first validating the incoming data.
+
+**Creating Serializer Object**
+
+```bash 
+  serializer = StudentSerializer(data = parsed_data)
+```
+
+**Validated Data**
+
+```bash 
+   serializer.is_valid()
+```
+
+```bash 
+   serializer.validated_data
+   serializer.errors
+```
+
+## Python JSON
+
+Python has a built in package called json, which is used to work with json data.
+
+**dumps(data):** This is used to convert python object into json string.
