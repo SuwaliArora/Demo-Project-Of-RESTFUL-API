@@ -1,3 +1,4 @@
+#third party application
 import requests
 import json
 
@@ -31,3 +32,34 @@ def post_data():
     print(data)
 
 post_data()
+
+def update_data():
+    data = {
+        'id': 2,
+        'name' : 'ravish',
+        'roll': 100,
+        'city': 'goa'
+    }
+    # to convert python data in json data
+    json_data = json.dumps(data)
+    # response stored in r
+    r = requests.put(url = URL, data = json_data)
+    # to extract data from r 
+    data = r.json()
+    print(data)
+
+update_data()
+
+def delete_data():
+    data = {
+        'id': 6
+    }
+    # to convert python data in json data
+    json_data = json.dumps(data)
+    # response stored in r
+    r = requests.delete(url = URL, data = json_data)
+    # to extract data from r 
+    data = r.json()
+    print(data)
+
+delete_data()
