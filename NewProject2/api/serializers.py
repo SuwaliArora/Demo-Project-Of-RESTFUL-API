@@ -1,7 +1,14 @@
+from django.db.models import fields
 from .models import Student
 from rest_framework import serializers
 from .models import Student
 
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['name', 'roll', 'city']
+
+'''
 # validators (user defined)
 def start_with_r(value):
     if value[0].lower() != 'r':
@@ -41,4 +48,4 @@ class StudentSerializer(serializers.Serializer):
             raise serializers.ValidationError('City must be ranchi')
         return data
 
-    
+'''    
