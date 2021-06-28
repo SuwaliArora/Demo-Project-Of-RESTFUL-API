@@ -3,10 +3,14 @@ from .models import Student
 from rest_framework import serializers
 from .models import Student
 
+# Model Serializers
 class StudentSerializer(serializers.ModelSerializer):
+    #name = serializers.CharField(read_only=True) #Read-only fields are included in the API output, but should not be included in the input during create or update operations
     class Meta:
         model = Student
         fields = ['name', 'roll', 'city']
+        #read_only_fields = ['name', 'roll', 'city'] # to make multiple read-only fields
+        extra_kwargs = {'name': {'read_only':True}} #one way to use arguments like read_only, write_only in fields
 
 '''
 # validators (user defined)
