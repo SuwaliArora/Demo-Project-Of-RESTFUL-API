@@ -200,3 +200,84 @@ Deserialization allows parsed data to be converted back into complex types, afte
 Python has a built in package called json, which is used to work with json data.
 
 **dumps(data):** This is used to convert python object into json string.
+
+
+## Validators
+
+REST framework the validation is performed entirely on the serializer class. This is advantageous for the following reasons:
+
+- It introduces a proper separation of concerns, making your code behavior more obvious.
+- It is easy to switch between using shortcut ModelSerializer classes and using explicit Serializer classes. Any validation behavior being used for ModelSerializer is simple to replicate.
+
+Printing the repr() of a serializer instance will show you exactly what validation rules it applies. There's no extra hidden validation behavior being called on the model instance.
+
+When you're using ModelSerializer all of this is handled automatically for you. If you' want to drop down to using Serializer classes instead, then you need to define the validation rules explicitly.  
+
+
+## Function Based api_view
+
+This wrapper provide a few bits of functionality such as making sure you receive Request instances in your view, and adding context to Response objects so that content negotiation can be performed.
+
+The wrapper also provide behaviour such as returning 405 Method Not Allowed responses when appropriate, and handling any ParseError exceptions that occur when accessing request.data with malformed input.
+
+By default only GET methods will be accepted. Other methods will respond with "405 Method Not Allowed".
+
+@api_view()
+
+@api_view(['GET', ‘POST', ‘PUT', 'DELETE']) def function_name(request):
+
+
+
+## Field Level Validation
+
+We can specify custom field-level validation by adding validate_fieldName methods to your Serializer subclass.
+
+These are similar to the clean fieldName methods on Django forms. validate fieldName methods should return the validated value or raise a serializers.ValidationError
+
+Syntax:
+```bash 
+  def validate_fieldname(self, value)
+```
+Example:- def validate_roll(self, value)
+
+## Object Level Validation
+
+When we need to do validation that requires access to multiple fields we do object level validation by adding a method called validate() to Serializer subclass.
+
+It raises a serializers. ValidationError if necessary, or just return the validated values.
+
+Syntax:
+```bash 
+  def validate (self, data)
+```
+Example:- def validate (self, data)
+
+Where, data is a dictionary of field values.
+
+
+`
+
+## Response ()
+
+REST framework supports HTTP content negotiation by providing a Response class which allows you to return content that can be rendered into multiple content types, depending on the client request.
+
+Response objects are initialized with data, which should consist of native Python primitives. REST framework then uses standard HTTP content negotiation to determine how it should render the final response content.
+
+Response class simply provides a nicer interface for returning content-negotiated Web API responses, that can be rendered to multiple formats.
+
+
+`Response(data, status=None, template_name=None, headers-None, content_type=None)
+`
+
+
+**data:** The unrendered, serialized data for the response.
+
+**status:** A status code for the response. Defaults to 200.
+
+**template_name:** A template name to use only if HTMLRenderer or some other custom template renderer is the accepted renderer for the response.
+
+**headers:** A dictionary of HTTP headers to use in the response.
+
+**content_type:** The content type of the response. Typically, this will be set automatically by the renderer as determined by content negotiation, but there may be some cases where you need to specify the content type explicitly.
+  
+  
