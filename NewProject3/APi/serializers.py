@@ -4,4 +4,4 @@ from rest_framework import serializers
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['id', 'nmae', 'roll', 'city']
+        fields = ['id', 'name', 'roll', 'city'] # got an error because field name is 'name' instead of 'nmae'.
