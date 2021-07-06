@@ -15,12 +15,12 @@ def get_data(id = None):
     data = r.json()
     print(data)
 
-#get_data()
+get_data(2)
 
 def post_data():
     data = {
-        'name' : 'rohit',
-        'roll' : 11,
+        'name' : 'rohita',
+        'roll' : 10,
         'city': 'goa'
     }
     headers = {'content-Type': 'application/json'}
@@ -33,11 +33,11 @@ def post_data():
 
     print(data)
 
-post_data()
+#post_data()
 
 def update_data():
     data = {
-        'id': 1,
+        'id': 2,
         'name' : 'ravisha',
         'roll': 106,
         'city': 'pune'
@@ -56,14 +56,15 @@ def update_data():
 
 def delete_data():
     data = {
-        'id': 7
+        'id': 3
     }
+    headers = {'content-Type': 'application/json'}
     # to convert python data in json data
     json_data = json.dumps(data)
     # response stored in r
-    r = requests.delete(url = URL, data = json_data)
+    r = requests.delete(url = URL, headers= headers, data = json_data)
     # to extract data from r 
     data = r.json()
     print(data)
 
-#delete_data()
+delete_data()
