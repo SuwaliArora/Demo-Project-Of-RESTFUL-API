@@ -16,10 +16,11 @@ def hello_world(request):
         return Response({'msg':'this is post request', 'data':request.data})   #arguments in response method is python data primitive
 '''
 
-@api_view(['GET','POST', 'PUT', 'DELETE'])  #function based api view
-def student_data(request):
+@api_view(['GET','POST', 'PUT', 'PATCH', 'DELETE'])  #function based api view
+def student_data(request, pk=None):
     if request.method == 'GET':
-        id = request.data.get('id')  #request.data has complete data in parsed form
+        #id = request.data.get('id')  #request.data has complete data in parsed form
+        id = pk
         if id is not None:
             stu = Student.objects.get(id=id)
             serializer = StudentSerializer(stu)
@@ -33,21 +34,32 @@ def student_data(request):
         serializer = StudentSerializer(data=request.data) #serialized data
         if serializer.is_valid():  #validation of data
             serializer.save()   
-            return Response({'msg':'Data created'})   #response of data
-        return Response(serializer.errors)
+            return Response({'msg':'Data created'}, status=status.HTTP_201_CREATED)   #response of data
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     if request.method == 'PUT':
-        id =  request.data.get('id')
+        #id =  request.data.get('id')
+        id=pk
+        stu = Student.objects.get(pk=id)
+        serializer = StudentSerializer(stu, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg': 'Complete Data updated'})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'PATCH':
+        #id =  request.data.get('id')
+        id=pk
         stu = Student.objects.get(pk=id)
         serializer = StudentSerializer(stu, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({'msg': 'Data updated'})
+            return Response({'msg': 'partial Data updated'})
         return Response(serializer.errors)
 
     if request.method == 'DELETE':
-        id =  request.data.get('id')
+        #id =  request.data.get('id')
+        id=pk
         stu = Student.objects.get(pk=id)
         stu.delete()
         return Response({'msg': 'Data deleted'})
-        
