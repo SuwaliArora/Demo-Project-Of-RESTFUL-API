@@ -310,6 +310,58 @@ This method should always be used rather than accessing self.queryset directly, 
 
 **filter_queryset(self, queryset)-** Given a queryset, filter it with whichever filter backends are in use, returning a new queryset.
 
+## Mixins
+
+One of the big wins of using class-based views is that it allows us to easily compose reusable bits of behaviour.
+
+The create/retrieve/update/delete operations that we've been using so far are going to be pretty similar for any model-backed API views we create.
+
+Those bits of common behaviour are implemented in REST framework's mixin classes.
+
+The mixin classes provide the actions that are used to provide the basic view behavior.
+
+
+
+**Note-** the mixin classes provide action methods rather than defining the handler methods, such as get() and post(), directly. This allows for more flexible composition of behavior.
+
+### ListModelMixin
+
+It provides a list(request, *args, **kwargs) method, that implements listing a queryset.
+
+If the queryset is populated, this returns a 200 OK response, with a serialized representation of the queryset as the body of the response. The response data may optionally be paginated.
+
+`from rest_framework.mixins import ListModelMixin`
+
+`from rest_framework.generics import GenericAPIView`
+
+### CreateModelMixin
+
+It provides a create(request, *args, **kwargs) method, that implements creating and saving a new model instance.
+
+If an object is created this returns a 201 Created response, with a serialized representation of the object as the body of the response. If the representation contains a key named url, then the Location header of the response will be populated with that value.
+
+If the request data provided for creating the object was invalid, a 400 Bad Request response will be returned, with the error details as the body of the response.
+  
+### RetrieveModelMixin
+
+It provides a retrieve(request, *args, **kwargs) method, that implements returning an existing model instance in a response.
+
+If an object can be retrieved this returns a 200 OK response, with a serialized representation of the object as the body of the response. Otherwise it will return a 404 Not Found.
+
+### UpdateModelMixin
+
+It provides a update(request, *args, **kwargs) method, that implements updating and saving an existing model instance.
+
+It also provides a partial_update(request, *args, **kwargs) method, which is similar to the update method, except that all fields for the update will be optional. This allows support for HTTP PATCH requests.
+
+If an object is updated this returns a 200 OK response, with a serialized representation of the object as the body of the response.
+
+### DestroyModelMixin
+
+It provides a destroy(request, *args, **kwargs) method, that implements deletion of an existing model instance.
+
+If an object is deleted this returns a 204 No Content response, otherwise it will return a 404 Not Found.
+
   
   
   
