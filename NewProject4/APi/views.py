@@ -2,7 +2,7 @@
 from .models import Student
 from .serializers import StudentSerializer
 from rest_framework.generics import ListAPIView,  CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView, RetrieveDestroyAPIView, RetrieveUpdateDestroyAPIView
 
 class StudentList(ListAPIView):
     queryset = Student.objects.all()
@@ -35,6 +35,11 @@ class StudentRetrieveUpdate(RetrieveUpdateAPIView):
 class StudentRetrieveDestroy(RetrieveDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
+class StudentRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+
 
 '''# GenericAPIView and Model Mixin
 from .models import Student
