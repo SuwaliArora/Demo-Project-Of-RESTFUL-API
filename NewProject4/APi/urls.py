@@ -16,4 +16,5 @@ urlpatterns = [
     path('studentdata/<int:pk>', views.StudentRetrieveUpdate.as_view()),
     path('studentdata/<int:pk>', views.StudentRetrieveDestroy.as_view()),
     path('studentdata/', views.StudentListCreate.as_view()),
+    path('studentdata/<int:pk>', views.StudentRetrieveUpdateDestroy.as_view()),
 ]
