@@ -6,7 +6,7 @@ from .models import Student
 from .serializers import StudentSerializer
 from rest_framework import status, viewsets
 
-class StudentViewSet(viewsets.ViewSet):
+'''class StudentViewSet(viewsets.ViewSet):
     def list(self, request):
         stu = Student.objects.all()
         serializer = StudentSerializer(stu, many=True)
@@ -50,3 +50,10 @@ class StudentViewSet(viewsets.ViewSet):
         stu = Student.objects.get(pk=id)
         stu.delete()
         return Response({'msg': 'Data deleted'})
+
+'''
+# code to perform CRUD operations by implementing modelViewSet
+class StudentModelViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
