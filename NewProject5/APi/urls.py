@@ -9,7 +9,10 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 #register StudentViewSet with Router
-router.register('studentdata', views.StudentViewSet, basename='student')
+#router.register('studentdata', views.StudentViewSet, basename='student')
+
+#register StudentModelViewSet with Router
+router.register('studentdata', views.StudentModelViewSet, basename='student')
 
 urlpatterns = [
     path('', include(router.urls)),
