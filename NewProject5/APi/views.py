@@ -6,7 +6,7 @@ from .models import Student
 from .serializers import StudentSerializer
 from rest_framework import status, viewsets]
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly
 
 
 '''class StudentViewSet(viewsets.ViewSet):
@@ -62,4 +62,6 @@ class StudentModelViewSet(viewsets.ModelViewSet):
     #authentication_classes = [BasicAuthentication]
     #permission_classes = [IsAuthenticated] #if user is authenticated then permissions allow to perform operations
     authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [DjangoModelPermissions]
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
