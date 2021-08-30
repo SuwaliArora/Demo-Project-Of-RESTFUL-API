@@ -419,6 +419,240 @@ Resource routing allows you to quickly declare all of the common routes for a gi
 
 REST framework adds support for automatic URL routing to Django, and provides you with a simple, quick and consistent way of wiring your view logic to a set of URLs.
 
+## Why use Authentication & Permission?
+
+Currently our API doesn't have any restrictions on who can edit or delete Data. We'd like to have some more advanced behavior in order to make sure that:
+
+-Data is always associated with a creator.
+-Only authenticated users may create Data.
+-Only the creator of a Data may update or delete it.
+-Unauthenticated requests should have full read-only access.
+
+## Authentication
+
+Authentication is the mechanism of associating an incoming request with a set of identifying credentials, such as the user the request came from, or the token that it was signed with. The permission and throttling policies can then use those credentials to determine if the request should be permitted.
+
+Authentication is always run at the very start of the view, before the permission and throttling checks occur, and before any other code is allowed to proceed.
+
+REST framework provides a number of authentication schemes out of the box, and also allows you to implement custom schemes.
+
+- Basic Authentication
+- SessionAuthentication
+- TokenAuthentication
+- Remote User Authentication
+- Custom authentication
+
+## BasicAuthentication
+
+This authentication scheme uses HTTP Basic Authentication, signed against a user's username and password.
+
+Basic authentication is generally only appropriate for testing.
+
+If successfully authenticated, BasicAuthentication provides the following credentials.
+
+- request.user will be a Django User instance.
+
+- request.auth will be None.
+
+Unauthenticated responses that are denied permission will result in an HTTP 401 Unauthorized response with an appropriate WWW-Authenticate header.
+
+Note: If you use BasicAuthentication in production you must ensure that your API is only available over https.
+
+You should also ensure that your API clients will always re-request the username and password at login, and will never store those details to persistent storage.
+
+## Permission
+
+Permissions are used to grant or deny access for different classes of users to different parts of the API.
+
+Permission checks are always run at the very start of the view, before any other code is allowed to proceed.
+
+Permission checks will typically use the authentication information in the request.user and request.auth properties to determine if the incoming request should be permitted.
+
+## Permission Classes
+
+Permissions in REST framework are always defined as a list of permission classes.
+
+-AllowAny
+-Is Authenticated
+-IsAdmin User
+-Is AuthenticatedOrReadOnly
+-DjangoModelPermissions
+-DjangoModelPermissionsOrAnonReadOnly
+-DjangoObjectPermissions
+
+## AllowAny
+
+The AllowAny permission class will allow unrestricted access, regardless of if the request was authenticated or unauthenticated.
+
+This permission is not strictly required, since you can achieve the same result by using an empty list or tuple for the permissions setting, but you may find it useful to specify this class because it makes the intention explicit.
+
+## IsAuthenticated
+
+The IsAuthenticated permission class will deny permission to any unauthenticated user, and allow permission otherwise.
+
+This permission is suitable if you want your API to only be accessible to registered users.
+
+
+## IsAdmin User
+
+The IsAdminUser permission class will deny permission to any user, unless user.is_staff is True in which case permission will be allowed.
+
+This permission is suitable if you want your API to only be accessible to a subset of trusted administrators.
+
+## Session Authentication
+
+This authentication scheme uses Django's default session backend for authentication. Session authentication is appropriate for AJAX clients that are running in the same session context as your website.
+
+If successfully authenticated, SessionAuthentication provides the following credentials.
+
+request.user will be a Django User instance. request.auth will be None.
+
+Unauthenticated responses that are denied permission will result in an HTTP 403 Forbidden response.
+
+If you're using an AJAX style API with SessionAuthentication, you'll need to make sure you include a valid CSRF token for any "unsafe" HTTP method calls, such as PUT, PATCH, POST or DELETE requests.
+
+## IsAuthenticatedOrReadOnly
+
+The Is AuthenticatedOrReadOnly will allow authenticated users to perform any request. Requests for unauthorised users will only be permitted if the request method is one of the "safe" methods; GET, HEAD or OPTIONS.
+
+This permission is suitable if you want to your API to allow read permissions to anonymous users, and only allow write permissions to authenticated users.
+
+## DjangoModelPermissions
+
+This permission class ties into Django's standard django.contrib.auth model permissions. This permission must only be applied to views that have a queryset property set. Authorization will only be granted if the user is authenticated and has the relevant model permissions assigned.
+
+-POST requests require the user to have the add permission on the model.
+
+-PUT and PATCH requests require the user to have the change permission on the model.
+
+-DELETE requests require the user to have the delete permission on the model.
+
+The default behaviour can also be overridden to support custom model permissions. For example, you might want to include a view model permission for GET requests.
+
+To use custom model permissions, override DjangoModelPermissions and set the perms map property.
+
+## DjangoModelPermissionsOrAnonReadOnly
+
+Similar to DjangoModelPermissions, but also allows unauthenticated users to have read-only access to the API.  
+
+## DjangoObjectPermissions
+
+This permission class ties into Django's standard object permissions framework that allows per-object permissions on models. In order to use this permission class, you'll also need to add a permission backend that supports object-level permissions, such as django-guardian.
+
+As with DjangoModelPermissions, this permission must only be applied to views that have a queryset property or get_queryset() method. Authorization will only be granted if the user is authenticated and has the relevant per-object permissions and relevant model permissions assigned.
+
+## Custom Permission
+To implement a custom permission, override BasePermission and implement either, or both, of the following methods:
+
+- has_permission(self, request, view)
+
+- has_object_permission(self, request, view, obj)
+
+The methods should return True if the request should be granted access, and False otherwise.
+
+## Permissions
+Third party packages:
+
+-DRF - Access Policy
+
+-Composed Permissions
+
+-REST Condition
+
+-DRY Rest Permissions
+
+-Django Rest Framework Roles
+
+-Django REST Framework API Key
+
+-Django Rest Framework Role Filters
+
+## TokenAuthentication
+
+This authentication scheme uses a simple token-based HTTP Authentication scheme. Token authentication is appropriate for client-server setups, such as native desktop and mobile clients.
+
+To use the TokenAuthentication scheme you'll need to configure the authentication classes to include TokenAuthentication, and additionally include rest_framework.authtoken in your INSTALLED_APPS setting:
+
+INSTALLED_APPS = [
+
+'rest_framework.authtoken'
+]
+
+Note: Make sure to run manage.py migrate after changing your settings. The rest_framework.authtoken app provides Django database migrations.
+
+If successfully authenticated, TokenAuthentication provides the following credentials.
+
+request.user will be a Django User instance.
+
+request.auth will be a rest_framework.authtoken.models.Token instance.
+
+Unauthenticated responses that are denied permission will result in an HTTP 401 Unauthorized response with an appropriate WWW-Authenticate header. For example:
+
+WWW-Authenticate: Token
+
+The http command line tool may be useful for testing token authenticated APIs.
+
+## Generate Token
+
+- Using Admin Application
+
+- Using Django manage.py command
+
+      python manage.py drf_create_token <username> - This command will return API Token for the given user or Creates a Token if token doesn't exist for user.
+
+-By exposing an API endpoint
+
+- Using Signals
+
+## How Client can Ask/Create Token
+
+When using TokenAuthentication, you may want to provide a mechanism for clients to obtain a token given the username and password.
+
+REST framework provides a built-in view to provide this behavior. To use it, add the obtain_auth_token view to your URL conf:
+
+      from rest_framework.authtoken.views import obtain_auth_token 
+
+The obtain_auth_token view will return a JSON response when valid username and password fields are POSTed to the view using form data or JSON:
+
+      http POST http://127.0.0.1:8000/gettoken/username="name"password="pass"
+      
+## Custom Authentication
+
+To implement a custom authentication scheme, subclass BaseAuthentication and override the authenticate(self, request) method.
+
+The method should return a two-tuple of (user, auth) if authentication succeeds, or None otherwise.
+
+## Authentication
+
+Third party packages:
+
+-Django OAuth Toolkit
+-JSON Web Token Authentication
+-Hawk HTTP Authentication
+-HTTP Signature Authentication
+-Djoser
+-django-rest-auth/dj-rest-auth
+-django-rest-framework-social-oauth2
+-django-rest-knox
+-drfpasswordless
+
+## JSON Web Token (JWT)
+
+JSON Web Token is a fairly new standard which can be used for token based authentication. Unlike the built-in TokenAuthentication scheme, JWT Authentication doesn't need to use a database to validate a token.
+
+## Simple JWT
+
+Simple JWT provides a JSON Web Token authentication backend for the Django REST Framework. It aims to cover the most common use cases of JWTs by offering a conservative set of default features. It also aims to be easily extensible in case a desired feature is not present.
+
+## How to Install Simple JWT
+
+```bash 
+  pip install djangorestframework-simplejwt
+```
+
+
+
+
   
   
   
