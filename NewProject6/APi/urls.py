@@ -11,9 +11,15 @@ router = DefaultRouter()
 #register StudentViewSet with Router
 router.register('studentdata', views.StudentModelViewSet, basename='student')
 
-urlpatterns = [
+'''urlpatterns = [
     path('', include(router.urls)),
     path('gettoken/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refreshtoken/', TokenRefreshView.as_view(), name='token_refresh'),
     path('verifytoken/', TokenVerifyView.as_view(), name='token_verify'),
+]
+'''
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
