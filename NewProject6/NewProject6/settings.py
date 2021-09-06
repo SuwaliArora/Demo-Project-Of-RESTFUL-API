@@ -132,3 +132,12 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS':True #to get a new refresh token each time
 }
 
+# globally defined throttle rates
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES':{
+        'anon': '2/day', #for anonymous user or unauthenticated user
+        'user': '5/hour', # for registered/authenticated user
+    }
+}
+
+
