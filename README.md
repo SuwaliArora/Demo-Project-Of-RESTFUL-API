@@ -697,7 +697,35 @@ The DEFAULT_THROTTLE_RATES['user'] setting.
 
 The ScopedRate Throttle class can be used to restrict access to specific parts of the API. This throttle will only be applied if the view that is being accessed includes a throttle_scope property. The unique throttle key will then be formed by concatenating the "scope" of the request with the unique user id or IP address.
 
+## Filtering
 
+The simplest way to filter the queryset of any view that subclasses Generic APIView is to override the .get_queryset() method.
+
+## Generic Filtering
+
+REST framework also includes support for generic filtering backends that allow you to easily construct complex searches and filters.
+
+## DjangoFilter Backend
+
+The django-filter library includes a DjangoFilterBackend class which supports highly customizable field filtering for REST framework.
+
+To use DjangoFilterBackend, first install django-filter.
+
+```bash
+pip install django-filter
+```
+
+Then add 'django_filters' to Django's INSTALLED_APPS: 
+
+```bash
+INSTALLED_APPS = [
+    .....
+    'django_filters',
+]
+```
+
+**Note- for more information related to django filters**
+https://django-filter.readthedocs.io/en/latest/index.html
 
 
   
