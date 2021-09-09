@@ -727,7 +727,38 @@ INSTALLED_APPS = [
 **Note- for more information related to django filters**
 https://django-filter.readthedocs.io/en/latest/index.html
 
+## Global Setting for Django filters
 
+Settings.py
+
+```bash
+REST_FRAMEWORK = {
+'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+```
   
+## DjangoFilterBackend
+
+If all you need is simple equality-based filtering, you can set a filterset_fields attribute on the view, or viewset, listing the set of fields you wish to filter against.
+
+## SearchFilter
+
+The SearchFilter class supports simple single query parameter based searching, and is based on the Django admin's search functionality. The SearchFilter class will only be applied if the view has a search fields attribute set. The search_fields attribute should be a list of names of text type fields on the model, such as CharField or TextField.
   
-  
+### URL example-
+http://127.0.0.1:8000/studentapi/?search=Ranchi
+
+### Examples for search filters
+
+- Starts-with search.
+- '=' Exact matches.
+- '@' Full-text search. (Currently only supported Django's PostgreSQL backend.)
+- 'S' Regex search.
+
+Example: search fields - ["^name'.]
+
+http://127.0.0.1:8000/studentapi/?search=r
+
+## OrderingFilter
+
+The OrderingFilter class supports simple query parameter controlled ordering of results.
