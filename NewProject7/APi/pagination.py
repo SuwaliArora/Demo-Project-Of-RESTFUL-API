@@ -9,3 +9,4 @@ class LimitoffsetPagination(LimitOffsetPagination):
     
 class cursorpagination(CursorPagination):
     page_size = 3
+    ordering = 'name' 
