@@ -3,12 +3,13 @@ from .models import Student
 from .serializers import StudentSerializer
 from rest_framework.generics import ListAPIView
 from rest_framework.filters import SearchFilter
-from .pagination import PageNumberpagination
+from .pagination import PageNumberpagination, LimitoffsetPagination
 
 class StudentList(ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    pagination_class = PageNumberpagination
+    pagination_class = LimitoffsetPagination
+    #pagination_class = PageNumberpagination
     
  ''' 
     filter_backends = [OrderingFilter]
