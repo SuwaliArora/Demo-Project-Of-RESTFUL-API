@@ -178,6 +178,9 @@ This is used to parse json data to python native data type.
 
 Deserialization allows parsed data to be converted back into complex types, after first validating the incoming data.
 
+![ss](https://user-images.githubusercontent.com/83538719/132996875-ea1c7cc0-a696-41f9-9444-ec35d8df6c0d.JPG)
+
+
 **Creating Serializer Object**
 
 ```bash 
@@ -851,6 +854,8 @@ Cursor based pagination requires that there is a unique, unchanging ordering of 
 The default is to order by "-created". This assumes that there must be a 'created' timestamp field on the model instances, and will present a "timeline" style paginated view, with the most recently added items first.
 
 The CursorPagination class includes a number of attributes that may be overridden to modify the pagination style.
+
+![cursor](https://user-images.githubusercontent.com/83538719/132996860-0fbaa31c-ce8f-4a12-976e-16cc95f75a62.JPG)
 
 To set these attributes you should override the CursorPagination class, and then enable your custom pagination class.
 
