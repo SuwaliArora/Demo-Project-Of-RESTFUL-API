@@ -7,7 +7,8 @@ class SongSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'singer', 'duration']
 
 class SingerSerializer(serializers.ModelSerializer):
-    song = serializers.StringRelatedField(many=True, read_only=True)  #to fetch data of particular singer/user
+    song = SongSerializer(many=True, read_only=True)  #nested serializer
+    #song = serializers.StringRelatedField(many=True, read_only=True)  #to fetch data of particular singer/user
     class Meta:
         model = Singer
         fields = ['id', 'name', 'gender', 'song']
